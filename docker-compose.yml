@@ -8,8 +8,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres_demo
-  web:
-    build: .
+  
+  server:
+    build: 
+      context: .
+      dockerfile: Dockerfile-server
     volumes:
       - .:/code
     ports:
@@ -17,6 +20,15 @@ services:
     depends_on:
       - postgres_db
       - cache
+  
+  client:
+    build: 
+      context: .
+      dockerfile: Dockerfile-client
+    volumes:
+      - ./client:/client
+    ports:
+      - 3000:3000
   
   cache:
     image: "redis:alpine"
